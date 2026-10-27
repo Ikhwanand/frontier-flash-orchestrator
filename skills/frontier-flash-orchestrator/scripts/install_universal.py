@@ -18,7 +18,7 @@ import sys
 AGENTS_MD = """# Universal Frontier-to-Flash Orchestrator Protocol
 
 > **Role & Philosophy**:
-> "Save Frontier Model tokens (Claude, Gemini, GPT) for architecture, high-stakes decisions, and final review. Delegate high-volume code writing, iterative test runs, and routine debugging to fast, free, or local worker models (such as Xiaomi MiMo-V2.6-Flash Free or DeepSeek Flash via OpenCode / 9Router)."
+> "Save Frontier Model tokens (Claude, Gemini, GPT) for architecture, high-stakes decisions, and final review. Delegate high-volume code writing, iterative test runs, and routine debugging to fast, free, or local worker models (such as Xiaomi MiMo-V2.6-Flash Free, DeepSeek Flash, or GLM 5.3 Flash via OpenCode, Freebuff, or 9Router)."
 
 ---
 
@@ -40,12 +40,25 @@ Before writing voluminous code:
 3. Output the executable task brief (`docs/agent-work/<task>/task-brief.md`).
 
 ### Step 2: Delegate Implementation (Fast/Free Worker)
-Invoke the worker CLI using the cross-tool dispatcher:
+Invoke the worker CLI using the cross-tool dispatcher (supports OpenCode, Kilo Code, and Freebuff):
 ```bash
-python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md --model opencode/mimo-v2.6-flash-free
+# Auto-detects available worker (OpenCode, Kilo Code, or Freebuff):
+python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md
+
+# Or explicitly specify provider:
+python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md --provider kilo
+python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md --provider freebuff
+python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md --provider opencode --model opencode/mimo-v2.6-flash-free
 ```
-*Or directly via OpenCode:*
+*Or directly via Kilo Code / Freebuff / OpenCode:*
 ```bash
+# Kilo Code CLI:
+kilo run --auto "Read and implement docs/agent-work/<task>/task-brief.md, run tests, and report."
+
+# Freebuff (reads .agents and AGENTS.md automatically):
+freebuff --trust-agents
+
+# OpenCode:
 opencode run --model opencode/mimo-v2.6-flash-free "Read and implement docs/agent-work/<task>/task-brief.md, run tests, and report."
 ```
 *The worker handles file discovery, drafting, test-driven debugging, and test validation without eating expensive frontier tokens.*
@@ -67,7 +80,7 @@ To preserve high-reasoning tokens and maintain context clarity on large tasks, a
 1. **Direct Execution**: For small, 1-2 file edits or quick bugfixes, implement directly using your native edit tools.
 2. **Substantial Tasks**: When the user requests a multi-file feature, major refactor, or complex task:
    - Create a task plan and task brief in `docs/agent-work/<task>/task-brief.md`.
-   - Delegate the implementation and test iterations to the fast/free local worker (MiMo-V2.6-Flash Free or DeepSeek Flash) using Bash:
+   - Delegate implementation and test iterations to the fast/free local worker (OpenCode or Freebuff) using Bash:
      ```bash
      python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md
      ```
@@ -90,7 +103,7 @@ When working on large, multi-file features or substantial refactoring tasks:
    - Do not spend massive context writing hundreds of lines of repetitive boilerplate if a free worker CLI is available.
 2. Delegate volume implementation to the local worker via terminal:
    ```bash
-   python scripts/dispatch_worker.py --brief docs/agent-work/<feature>/task-brief.md --model opencode/mimo-v2.6-flash-free
+   python scripts/dispatch_worker.py --brief docs/agent-work/<feature>/task-brief.md
    ```
 3. Perform **Acceptance Review**:
    - Inspect the worker's changes via `git diff`.
@@ -103,7 +116,7 @@ WINDSURF_RULES = """# Windsurf Frontier-to-Flash Orchestration Rules
 - For small, single-file edits, implement directly.
 - For multi-file builds, large refactors, or extensive test generation:
   1. Define the architectural spec and task brief (`docs/agent-work/<task>/task-brief.md`).
-  2. Dispatch implementation to the fast worker via terminal:
+  2. Dispatch implementation to the fast worker (OpenCode or Freebuff) via terminal:
      `python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md`
   3. Review the git diff and run verification commands before completing the turn.
 """

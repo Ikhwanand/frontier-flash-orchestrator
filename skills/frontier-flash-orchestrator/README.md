@@ -3,7 +3,7 @@
 A native Antigravity skill that brings the **Thin-Root Orchestration** pattern to Antigravity sessions.
 
 - **Orchestrator**: Frontier Model (Gemini 3.8 Flash High, Claude 3.7 Sonnet, GPT-5).
-- **Implementation Worker**: High-speed / Free models (Xiaomi MiMo-V2.6-Flash Free, DeepSeek V4.1 Flash) via OpenCode and 9Router.
+- **Implementation Worker**: High-speed / Free models (Xiaomi MiMo-V2.6-Flash Free, DeepSeek V4.1 Flash, GLM 5.3 Flash) via OpenCode, Kilo Code, or Freebuff.
 
 ---
 
@@ -12,9 +12,10 @@ A native Antigravity skill that brings the **Thin-Root Orchestration** pattern t
 1. **Architecture & Scope (Frontier)**:
    Antigravity analyzes requirements, defines boundaries, and writes an executable task brief in `docs/agent-work/<feature>/task-brief.md`.
 
-2. **Autonomous Implementation (Worker via OpenCode)**:
-   Antigravity dispatches the brief to OpenCode CLI using:
+2. **Autonomous Implementation (Worker via OpenCode, Kilo Code, or Freebuff)**:
+   Antigravity dispatches the brief using:
    ```powershell
+   # Auto-detects OpenCode, Kilo Code, or Freebuff
    python .agents/skills/frontier-flash-orchestrator/scripts/dispatch_worker.py --brief docs/agent-work/<feature>/task-brief.md
    ```
    The worker creates files, writes the code, and runs tests iteratively without consuming expensive Frontier tokens.

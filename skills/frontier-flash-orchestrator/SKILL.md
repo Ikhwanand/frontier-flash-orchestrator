@@ -1,6 +1,6 @@
 ---
 name: frontier-flash-orchestrator
-description: Orchestrate substantial coding tasks, multi-file builds, and refactors using Frontier Models (Gemini, Claude, GPT) for architecture and final review, while delegating high-volume code writing, unit testing, and debugging to fast/free worker models (such as Xiaomi MiMo-V2.6-Flash Free or DeepSeek V4.1 Flash) via OpenCode or 9Router CLI.
+description: Orchestrate substantial coding tasks, multi-file builds, and refactors using Frontier Models (Gemini, Claude, GPT) for architecture and final review, while delegating high-volume code writing, unit testing, and debugging to fast/free worker models (such as Xiaomi MiMo-V2.6-Flash Free, DeepSeek V4.1 Flash, or GLM 5.3 Flash) via OpenCode, Freebuff, or 9Router CLI.
 ---
 
 # Frontier Flash Orchestrator for Antigravity
@@ -11,7 +11,7 @@ When working on large features or complex refactors, typing hundreds of lines of
 
 This skill implements the **Thin-Root Orchestration** pattern in Antigravity:
 1. **Frontier Model (Antigravity)**: Plans architecture, sets strict contracts, writes task briefs, and conducts rigorous code/security review.
-2. **Flash Worker (OpenCode / 9Router)**: Executes file discovery, code implementation, test execution, and debugging autonomously.
+2. **Flash Worker (OpenCode / Freebuff / 9Router)**: Executes file discovery, code implementation, test execution, and debugging autonomously.
 3. **Frontier Model (Antigravity)**: Inspects the patch diff and test evidence, performs final acceptance, and reports to the user.
 
 ---
@@ -25,8 +25,9 @@ When the user asks to build a substantial feature, refactor, or complex task, or
    - For multi-file changes, new features, or multi-step tasks, activate the full orchestrator workflow.
 
 2. **Verify Worker Availability**:
-   - Default Worker: `opencode/mimo-v2.6-flash-free` or `opencode-go/deepseek-v4.1-flash` via OpenCode / 9Router.
-   - Ensure OpenCode (`opencode`) is available in the system PATH.
+   - Supported Providers: **OpenCode** (`opencode`), **Kilo Code** (`kilo`), and **Freebuff** (`freebuff`).
+   - Default Models: `opencode/mimo-v2.6-flash-free`, `openrouter/xiaomi/mimo-v2.6-flash`, or Freebuff built-in flash models.
+   - Ensure at least one worker CLI is installed.
 
 ---
 
@@ -58,11 +59,24 @@ Create an executable task brief (`docs/agent-work/<feature>/task-brief.md`):
 Antigravity dispatches the implementation bundle to the local worker via `run_command`:
 
 ```powershell
-python .agents/skills/frontier-flash-orchestrator/scripts/dispatch_worker.py --brief docs/agent-work/<feature>/task-brief.md --model opencode/mimo-v2.6-flash-free
+# Auto-detects available provider (OpenCode, Kilo Code, or Freebuff):
+python .agents/skills/frontier-flash-orchestrator/scripts/dispatch_worker.py --brief docs/agent-work/<feature>/task-brief.md
+
+# Or explicitly choose provider:
+python .agents/skills/frontier-flash-orchestrator/scripts/dispatch_worker.py --brief docs/agent-work/<feature>/task-brief.md --provider kilo
+python .agents/skills/frontier-flash-orchestrator/scripts/dispatch_worker.py --brief docs/agent-work/<feature>/task-brief.md --provider freebuff
+python .agents/skills/frontier-flash-orchestrator/scripts/dispatch_worker.py --brief docs/agent-work/<feature>/task-brief.md --provider opencode --model opencode/mimo-v2.6-flash-free
 ```
 
-*Or directly using OpenCode CLI:*
+*Or directly via Kilo Code / Freebuff / OpenCode:*
 ```powershell
+# Kilo Code CLI:
+kilo run --auto "Please read and execute the task brief located at docs/agent-work/<feature>/task-brief.md. Run all tests and verify before finishing."
+
+# Freebuff:
+freebuff --trust-agents
+
+# OpenCode:
 opencode run --model opencode/mimo-v2.6-flash-free "Please read and execute the task brief located at docs/agent-work/<feature>/task-brief.md. Run all tests and verify before finishing."
 ```
 

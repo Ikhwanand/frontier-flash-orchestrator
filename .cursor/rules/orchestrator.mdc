@@ -12,7 +12,7 @@ When working on large, multi-file features or substantial refactoring tasks:
    - Do not spend massive context writing hundreds of lines of repetitive boilerplate if a free worker CLI is available.
 2. Delegate volume implementation to the local worker via terminal:
    ```bash
-   python scripts/dispatch_worker.py --brief docs/agent-work/<feature>/task-brief.md --model opencode/mimo-v2.6-flash-free
+   python scripts/dispatch_worker.py --brief docs/agent-work/<feature>/task-brief.md
    ```
 3. Perform **Acceptance Review**:
    - Inspect the worker's changes via `git diff`.

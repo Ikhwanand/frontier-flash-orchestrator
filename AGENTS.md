@@ -1,7 +1,7 @@
 # Universal Frontier-to-Flash Orchestrator Protocol
 
 > **Role & Philosophy**:
-> "Save Frontier Model tokens (Claude, Gemini, GPT) for architecture, high-stakes decisions, and final review. Delegate high-volume code writing, iterative test runs, and routine debugging to fast, free, or local worker models (such as Xiaomi MiMo-V2.6-Flash Free or DeepSeek Flash via OpenCode / 9Router)."
+> "Save Frontier Model tokens (Claude, Gemini, GPT) for architecture, high-stakes decisions, and final review. Delegate high-volume code writing, iterative test runs, and routine debugging to fast, free, or local worker models (such as Xiaomi MiMo-V2.6-Flash Free, DeepSeek Flash, or GLM 5.3 Flash via OpenCode, Freebuff, or 9Router)."
 
 ---
 
@@ -23,12 +23,25 @@ Before writing voluminous code:
 3. Output the executable task brief (`docs/agent-work/<task>/task-brief.md`).
 
 ### Step 2: Delegate Implementation (Fast/Free Worker)
-Invoke the worker CLI using the cross-tool dispatcher:
+Invoke the worker CLI using the cross-tool dispatcher (supports OpenCode, Kilo Code, and Freebuff):
 ```bash
-python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md --model opencode/mimo-v2.6-flash-free
+# Auto-detects available worker (OpenCode, Kilo Code, or Freebuff):
+python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md
+
+# Or explicitly choose provider:
+python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md --provider kilo
+python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md --provider freebuff
+python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md --provider opencode --model opencode/mimo-v2.6-flash-free
 ```
-*Or directly via OpenCode:*
+*Or directly via Kilo Code / Freebuff / OpenCode:*
 ```bash
+# Kilo Code CLI:
+kilo run --auto "Read and implement docs/agent-work/<task>/task-brief.md, run tests, and report."
+
+# Freebuff (reads .agents and AGENTS.md automatically):
+freebuff --trust-agents
+
+# OpenCode:
 opencode run --model opencode/mimo-v2.6-flash-free "Read and implement docs/agent-work/<task>/task-brief.md, run tests, and report."
 ```
 *The worker handles file discovery, drafting, test-driven debugging, and test validation without eating expensive frontier tokens.*

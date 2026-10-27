@@ -3,6 +3,6 @@
 - For small, single-file edits, implement directly.
 - For multi-file builds, large refactors, or extensive test generation:
   1. Define the architectural spec and task brief (`docs/agent-work/<task>/task-brief.md`).
-  2. Dispatch implementation to the fast worker via terminal:
+  2. Dispatch implementation to the fast worker (OpenCode or Freebuff) via terminal:
      `python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md`
   3. Review the git diff and run verification commands before completing the turn.

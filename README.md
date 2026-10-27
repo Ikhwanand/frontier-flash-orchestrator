@@ -25,9 +25,9 @@ When working on substantial features, large refactors, or test suite generation,
                            │ Dispatches brief via CLI
                            ▼
 ┌────────────────────────────────────────────────────────┐
-│            Fast/Free Worker (OpenCode / 9Router)       │
+│      Fast/Free Worker (OpenCode / Freebuff / Kilo)     │
 │          "The High-Volume Implementation Builder"      │
-│  - Uses: Xiaomi MiMo-V2.6-Flash Free / DeepSeek Flash  │
+│  - Uses: MiMo-V2.6-Flash Free / DeepSeek Flash / GLM   │
 │  - Writes implementation code and runs automated tests │
 │  - Self-corrects edge cases and returns patch evidence │
 └────────────────────────────────────────────────────────┘
@@ -62,7 +62,7 @@ This repository provides zero-config native rule files for all major AI coding t
 | **Cursor** | `.cursor/rules/orchestrator.mdc` | Native Cursor Rules in Composer / Agent |
 | **Windsurf** | `.windsurfrules` | Native rules for Cascade agent |
 | **GitHub Copilot** | `.github/copilot-instructions.md` | Copilot Chat & Workspace instructions |
-| **OpenCode / Kilo** | `AGENTS.md` | Universal multi-agent protocol |
+| **OpenCode / Freebuff / Kilo** | `AGENTS.md` | Universal multi-agent protocol |
 
 ---
 
@@ -77,9 +77,15 @@ When assigned a substantial feature or refactor, the Frontier model creates a ta
 ### Step 2: Implementation (Fast/Free Worker)
 The agent executes the worker dispatcher via terminal:
 ```bash
-python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md --model opencode/mimo-v2.6-flash-free
+# Auto-detects available worker (OpenCode, Kilo Code, or Freebuff):
+python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md
+
+# Or explicitly choose provider:
+python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md --provider kilo
+python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md --provider freebuff
+python scripts/dispatch_worker.py --brief docs/agent-work/<task>/task-brief.md --provider opencode
 ```
-The worker (MiMo-V2.6-Flash Free or DeepSeek Flash via OpenCode / 9Router) writes the code and runs test loops autonomously.
+The worker (MiMo-V2.6-Flash, DeepSeek Flash, or GLM 5.3 Flash via OpenCode, Kilo Code, or Freebuff) writes the code and runs test loops autonomously.
 
 ### Step 3: Acceptance Review (Frontier Agent)
 The Frontier model reviews the `git diff`, ensures architectural integrity and security, runs tests independently, and presents the final reviewed result.
