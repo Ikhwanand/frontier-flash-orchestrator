@@ -53,9 +53,9 @@ def main() -> int:
     parser.add_argument("--brief", required=True, help="Path to the task-brief.md file")
     parser.add_argument(
         "--provider",
-        choices=["auto", "opencode", "freebuff", "kilo"],
-        default="auto",
-        help="Worker provider CLI to use: 'opencode', 'freebuff', 'kilo', or 'auto' (default: auto)",
+        choices=["opencode", "freebuff", "kilo"],
+        default="opencode",
+        help="Worker provider CLI to use: 'opencode', 'freebuff', or 'kilo' (default: opencode)",
     )
     parser.add_argument("--model", default=None, help="Worker model slug (default: provider specific)")
     parser.add_argument("--cwd", default=".", help="Working directory for worker")
